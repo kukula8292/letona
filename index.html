@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hogwarts Cafe | Ja-Ela</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --gold: #c9a34e; --gold-light: #e8c96a; --gold-dark: #a07030;
+            --parchment: #f5e6c8; --parchment-dark: #e8d4a8;
+            --ink: #1a1208; --deep: #0a0608;
+            --border: rgba(201,163,78,0.3);
+            --magic-glow: 0 0 15px rgba(201, 163, 78, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: var(--deep); color: var(--parchment);
+            font-family: 'IM Fell English', serif; min-height: 100vh;
+            overflow-x: hidden; line-height: 1.6;
+        }
+
+        /* --- BACKGROUND & STARS --- */
+        .stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        .stars::before, .stars::after {
+            content: ''; position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%;
+            box-shadow: 120px 40px white, 800px 200px white, 300px 500px white, 1100px 400px white;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        @keyframes twinkle { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1rem 5%; background: rgba(10, 6, 8, 0.9);
+            border-bottom: 1px solid var(--border); backdrop-filter: blur(10px);
+        }
+        .nav-logo { font-family: 'Cinzel Decorative', cursive; color: var(--gold); text-decoration: none; font-size: 1.5rem; }
+        .nav-links a { 
+            color: var(--parchment); text-decoration: none; margin-left: 20px; 
+            font-family: 'Cinzel', serif; font-size: 0.8rem; letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--gold); text-shadow: var(--magic-glow); }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; text-align: center; position: relative; padding: 20px;
+        }
+        .castle-silhouette {
+            position: absolute; bottom: 0; width: 100%; opacity: 0.1; pointer-events: none;
+        }
+        .hero h1 {
+            font-family: 'Cinzel Decorative', cursive; font-size: clamp(3rem, 8vw, 6rem);
+            color: var(--gold-light); text-shadow: 0 0 30px rgba(201, 163, 78, 0.5);
+            margin-bottom: 10px;
+        }
+        .hero-sub { font-family: 'Cinzel', serif; letter-spacing: 5px; text-transform: uppercase; opacity: 0.8; }
+
+        /* --- MENU SECTION --- */
+        .menu-section { padding: 80px 5%; position: relative; z-index: 1; }
+        .section-header { text-align: center; margin-bottom: 50px; }
+        .section-title { font-family: 'Cinzel Decorative', cursive; font-size: 2.5rem; color: var(--gold); }
+        
+        .menu-tabs { display: flex; justify-content: center; margin-bottom: 40px; gap: 10px; }
+        .menu-tab {
+            background: transparent; border: 1px solid var(--border); color: var(--parchment);
+            padding: 10px 25px; cursor: pointer; font-family: 'Cinzel', serif; transition: 0.3s;
+        }
+        .menu-tab.active { background: var(--gold); color: var(--ink); border-color: var(--gold); font-weight: bold; }
+
+        .menu-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 30px; max-width: 1100px; margin: 0 auto; 
+        }
+        .menu-cat { 
+            background: rgba(20, 15, 20, 0.6); padding: 30px; border: 1px solid var(--border);
+            transition: 0.4s; position: relative; overflow: hidden;
+        }
+        .menu-cat:hover { border-color: var(--gold); box-shadow: var(--magic-glow); transform: translateY(-5px); }
+        
+        .menu-item { display: flex; justify-content: space-between; margin-bottom: 20px; align-items: flex-start; }
+        .menu-item-name { color: var(--gold-light); font-weight: bold; display: block; }
+        .menu-item-desc { font-size: 0.85rem; color: rgba(245,230,200,0.6); font-style: italic; }
+        .menu-item-price { color: var(--gold); font-family: 'Cinzel', serif; }
+
+        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<nav>
+    <a href="#" class="nav-logo">⚡ Hogwarts Cafe</a>
+    <div class="nav-links">
+        <a href="#menu">Menu</a>
+        <a href="#about">Story</a>
+        <a href="#location">Find Us</a>
+        <a href="#" style="border:1px solid var(--gold); padding:5px 15px">Reserve</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <svg class="castle-silhouette" viewBox="0 0 1200 400" fill="white">
+        <rect x="0" y="350" width="1200" height="50"/>
+        <path d="M100 200h60v200h-60zM400 180h80v220h-80zM580 160h100v240h-100z" opacity="0.5"/>
+    </svg>
+    <div class="reveal">
+        <div style="color:var(--gold); letter-spacing:3px">EST. 2024 · JA-ELA</div>
+        <h1>Hogwarts Cafe</h1>
+        <p class="hero-sub">Where Magic Meets Every Sip</p>
+    </div>
+</section>
+
+<section class="menu-section" id="menu">
+    <div class="section-header reveal">
+        <h2 class="section-title">The Enchanted Menu</h2>
+        <p>Hand-crafted potions and wizarding delights</p>
+    </div>
+
+    <div class="menu-tabs">
+        <button class="menu-tab active" onclick="switchTab('drinks')">Potions</button>
+        <button class="menu-tab" onclick="switchTab('food')">Eats</button>
+        <button class="menu-tab" onclick="switchTab('sweets')">Sweets</button>
+    </div>
+
+    <div id="drinks" class="menu-grid tab-content">
+        <div class="menu-cat">
+            <h3 style="color:var(--gold); margin-bottom:15px; font-family:'Cinzel'">Signature Potions</h3>
+            <div class="menu-item">
+                <div>
+                    <span class="menu-item-name">Butterbeer Classic</span>
+                    <span class="menu-item-desc">Butterscotch foam & secret spices</span>
+                </div>
+                <span class="menu-item-price">Rs. 580</span>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <span class="menu-item-name">Polyjuice Latte</span>
+                    <span class="menu-item-desc">Color-changing pea flower magic</span>
+                </div>
+                <span class="menu-item-price">Rs. 620</span>
+            </div>
+        </div>
+        <div class="menu-cat">
+            <h3 style="color:var(--gold); margin-bottom:15px; font-family:'Cinzel'">The Pensieve</h3>
+            <div class="menu-item">
+                <div>
+                    <span class="menu-item-name">Dark Arts Mocha</span>
+                    <span class="menu-item-desc">Activated charcoal & dark cocoa</span>
+                </div>
+                <span class="menu-item-price">Rs. 560</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="food" class="menu-grid tab-content" style="display:none">
+         <div class="menu-cat">
+            <h3 style="color:var(--gold); margin-bottom:15px; font-family:'Cinzel'">Wizarding Eats</h3>
+            <div class="menu-item">
+                <div>
+                    <span class="menu-item-name">Great Feast Toastie</span>
+                    <span class="menu-item-desc">Triple cheese & caramelized onion</span>
+                </div>
+                <span class="menu-item-price">Rs. 780</span>
+            </div>
+        </div>
+    </div>
+    <div id="sweets" class="menu-grid tab-content" style="display:none">
+        <div class="menu-cat">
+            <h3 style="color:var(--gold); margin-bottom:15px; font-family:'Cinzel'">Honeydukes</h3>
+            <div class="menu-item">
+                <div>
+                    <span class="menu-item-name">Chocolate Frog Brownie</span>
+                    <span class="menu-item-desc">Rich fudge with a surprise inside</span>
+                </div>
+                <span class="menu-item-price">Rs. 380</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Tab Switching Logic
+    function switchTab(tabId) {
+        // Hide all content
+        document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
+        // Show selected
+        document.getElementById(tabId).style.display = 'grid';
+        
+        // Update Buttons
+        document.querySelectorAll('.menu-tab').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
+    // Scroll Reveal Logic
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
